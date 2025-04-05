@@ -1,4 +1,4 @@
-// const jwt = require("jsonwebtoken");
+import jwt from "jsonwebtoken";
 import User from "../models/users.js";
 
 export const registerAUser = async (req, res) => {
@@ -62,21 +62,17 @@ export const deleteUser = async (req, res) => {
 	}
 };
 
+//Handle user athentication for login
 export const loginUser = async (req, res) => {
 	try {
-		if (req.authUser) {
-			console.log("token check passwed and continue to persistant login");
-			res.status(200).send({
-				success: true,
-				username: req.authUser.username
-			});
-			return;
-		}
-		const token = await jwt.sign({ id_: req.user._id }, process.env.SECRET);
+		/*generate token for user session more information on jwt and how it is 
+		used can be found here: https://www.digitalocean.com/community/tutorials/nodejs-jwt-expressjs
+		#*/
+		const usersToken = jwt.sign(req.body.username, process.env.JWT_SECRET);
 		res.status(200).send({
 			success: true,
-			username: req.user.username,
-			token
+			username: req.matchingUser.username,
+			usersToken
 		});
 	} catch (error) {
 		console.log(error);

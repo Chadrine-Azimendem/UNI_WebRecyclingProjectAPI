@@ -5,7 +5,7 @@ import User from "../models/users.js";
 //Hash the password before saving in database
 export const hashPassword = async (req, res, next) => {
 	try {
-		req.body.password = await bcrypt.hash(req.body.password, 10);
+		req.body.password = await bcrypt.hash(req.body.password, 6);
 		next();
 	} catch (error) {
 		console.log(error);
@@ -13,16 +13,19 @@ export const hashPassword = async (req, res, next) => {
 	}
 };
 
+//Validate user's login request
 export const checkPass = async (req, res, next) => {
 	try {
-		req.user = await User.findOne({ username: req.body.username });
-		if (
-			req.user &&
-			(await bcrypt.compare(req.body.password, req.user.password))
-		) {
-			console.log("password is correct");
+		req.matchingUser = await User.findOne({ username: req.body.username });
+		//check if submitted password matches password in database
+		const isPasswordCorrect = bcrypt.compare(req.body.password, req.matchingUser.password);
+		if (req.matchingUser && isPasswordCorrect) {
 			next();
 		} else {
+			res.status(400).send({
+				success: false,
+				message: "incorrect username or password"
+			});
 			throw new Error("incorrect username or password");
 		}
 	} catch (error) {

@@ -8,7 +8,7 @@ import {
 	deleteUser,
 	loginUser
 } from "./controllers.js";
-import { hashPassword } from "../middleware/authValidations.js";
+import { hashPassword, checkPass } from "../middleware/authValidations.js";
 import {
 	isPasswordValid,
 	isEmailValid
@@ -23,7 +23,7 @@ usersRouter.post(
 	hashPassword,
 	registerAUser
 );
-// usersRouter.post("/login", checkPass, loginUser);
+usersRouter.post("/login", checkPass, loginUser);
 // usersRouter.post("/readUser", checkToken, readUsers);
 usersRouter.put(
 	"/updateDetails",
@@ -34,6 +34,6 @@ usersRouter.put(
 	updateUser
 );
 // usersRouter.delete("/unsubscribe", checkToken, deleteUser);
-// usersRouter.get("/authCheck", checkToken, loginUser);
+
 
 export default usersRouter;

@@ -1,0 +1,6 @@
+#Ignore the node modules when pushed to github.
+node_modules 
+
+#ignore the environment variables file whilst 
+#pushing to remote repo because it contains sensitive iformation like the API keys or our DB passes
+.env

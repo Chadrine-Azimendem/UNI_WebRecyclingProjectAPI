@@ -69,9 +69,10 @@ export const loginUser = async (req, res) => {
 		used can be found here: https://www.digitalocean.com/community/tutorials/nodejs-jwt-expressjs
 		#*/
 		const usersToken = jwt.sign(req.body.username, process.env.JWT_SECRET);
-		res.status(200).send({
+		res.status(200).json({
 			success: true,
 			username: req.matchingUser.username,
+			type: req.matchingUser.is_admin,
 			usersToken
 		});
 	} catch (error) {

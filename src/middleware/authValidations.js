@@ -16,10 +16,12 @@ export const hashPassword = async (req, res, next) => {
 //Validate user's login request
 export const checkPass = async (req, res, next) => {
 	try {
-		req.matchingUser = await User.findOne({ username: req.body.username });
+		req.matchingUser = await User.findOne({ where: { username: req.body.username } });
 		//check if submitted password matches password in database
 		const isPasswordCorrect = bcrypt.compare(req.body.password, req.matchingUser.password);
 		if (req.matchingUser && isPasswordCorrect) {
+			console.log("looking for...", req.body.username)
+			console.log("User found:", req.matchingUser)
 			next();
 		} else {
 			res.status(400).send({

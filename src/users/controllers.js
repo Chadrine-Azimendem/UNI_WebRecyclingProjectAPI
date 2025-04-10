@@ -36,19 +36,7 @@ export const registerAUser = async (req, res) => {
 	}
 };
 
-export const readUsers = async (req, res) => {
-	try {
-		const users = await User.find(req.body);
-		res.status(200).send({
-			success: true,
-			users: users
-		});
-	} catch (error) {
-		console.log(error);
-		res.status(500).send({ success: false, error: error.message });
-	}
-};
-
+//Delete a user
 export const deleteUser = async (req, res) => {
 	try {
 		await User.deleteOne({ username: req.body.username });
@@ -72,6 +60,7 @@ export const loginUser = async (req, res) => {
 		res.status(200).json({
 			success: true,
 			username: req.matchingUser.username,
+			email: req.matchingUser.email,
 			type: req.matchingUser.is_admin,
 			usersToken
 		});
@@ -81,6 +70,7 @@ export const loginUser = async (req, res) => {
 	}
 };
 
+//Update a user
 export const updateUser = async (req, res) => {
 	try {
 		// define the filter

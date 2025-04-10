@@ -3,7 +3,6 @@ import express from "express";
 //import controller and midlewares
 import {
 	registerAUser,
-	readUsers,
 	updateUser,
 	deleteUser,
 	loginUser

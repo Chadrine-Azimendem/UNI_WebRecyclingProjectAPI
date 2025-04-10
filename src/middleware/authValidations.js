@@ -15,24 +15,24 @@ export const hashPassword = async (req, res, next) => {
 
 //Validate user's login request
 export const checkPass = async (req, res, next) => {
-	try {
-		req.matchingUser = await User.findOne({ where: { username: req.body.username } });
-		//check if submitted password matches password in database
-		const isPasswordCorrect = bcrypt.compare(req.body.password, req.matchingUser.password);
-		if (req.matchingUser && isPasswordCorrect) {
-			console.log("looking for...", req.body.username)
-			console.log("User found:", req.matchingUser)
-			next();
-		} else {
-			res.status(400).send({
-				success: false,
-				message: "incorrect username or password"
-			});
-			throw new Error("incorrect username or password");
+	if (req.body.password !== "" && req.body.username !== "") {
+		try {
+			req.matchingUser = await User.findOne({ where: { username: req.body.username } });
+			//check if submitted password matches password in database
+			const isPasswordCorrect = bcrypt.compare(req.body.password, req.matchingUser.password);
+			if (req.matchingUser && isPasswordCorrect) {
+				console.log("looking for...", req.body.username)
+				console.log("User found:", req.matchingUser)
+				next();
+			} else {
+				throw new Error("incorrect username or password");
+			}
+		} catch (error) {
+			console.log(error);
+			res.status(500).send({ success: false, error: error.message });
 		}
-	} catch (error) {
-		console.log(error);
-		res.status(500).send({ success: false, error: error.message });
+	} else {
+		throw new Error("Empty field.");
 	}
 };
 

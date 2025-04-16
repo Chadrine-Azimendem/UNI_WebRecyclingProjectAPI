@@ -1,7 +1,7 @@
 import { Sequelize } from "sequelize";
 import sequelizeConnector from "../database/dbConnection.js";
 
-const Post = sequelizeConnector.define("posts", {
+const Post = sequelizeConnector.define("post", {
 	id: {
 		type: Sequelize.INTEGER,
 		autoIncrement: true,

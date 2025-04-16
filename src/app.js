@@ -5,6 +5,7 @@ import User from "./models/users.js";
 import Post from "./models/posts.js";
 import usersRouter from "./users/routes.js";
 import usersPostsRouter from "./users/usersPosts/routes.js";
+import quoteRouter from "./quotes/routes.js"
 import bodyParser from "body-parser";
 
 const app = express(); //start the express app
@@ -17,8 +18,9 @@ app.use(express.json({ limit: 52428800 }))
 app.use(express.urlencoded({ limit: 52428800, extended: true }));
 app.use("/user", usersRouter);
 app.use("/", usersPostsRouter);
+app.use("/quotes", quoteRouter);
 
-//define one to many relation
+//define one to many relation between users and posts tables.
 User.hasMany(Post, { foreignKey: "userId", as: "posts" });
 Post.belongsTo(User, { foreignKey: "userId", as: "user" });
 

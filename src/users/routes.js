@@ -5,9 +5,10 @@ import {
 	registerAUser,
 	updateUser,
 	deleteUser,
-	loginUser
+	loginUser,
+	getBookingsAndSalesTotals
 } from "./controllers.js";
-import { hashPassword, checkPass } from "../middleware/authValidations.js";
+import { hashPassword, checkPass, verifyToken } from "../middleware/authValidations.js";
 import {
 	isPasswordValid,
 	isEmailValid
@@ -32,6 +33,9 @@ usersRouter.put(
 	// isEmailValid,
 	updateUser
 );
+
+usersRouter.get("/statistics", getBookingsAndSalesTotals);
+
 // usersRouter.delete("/unsubscribe", checkToken, deleteUser);
 
 

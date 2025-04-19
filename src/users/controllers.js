@@ -1,5 +1,7 @@
 import jwt from "jsonwebtoken";
 import User from "../models/users.js";
+import BookingStats from "../models/bookingStats.js";
+import SalesStats from "../models/salesStats.js";
 
 export const registerAUser = async (req, res) => {
 	try {
@@ -59,6 +61,7 @@ export const loginUser = async (req, res) => {
 		const usersToken = jwt.sign(req.body.username, process.env.JWT_SECRET);
 		res.status(200).json({
 			success: true,
+			userId: req.matchingUser.id,
 			username: req.matchingUser.username,
 			email: req.matchingUser.email,
 			type: req.matchingUser.is_admin,
@@ -92,5 +95,63 @@ export const updateUser = async (req, res) => {
 		console.log(error);
 		// send internal error status and the error message
 		res.status(400).send({ success: false, error: error.message });
+	}
+};
+
+//Handle user athentication for login
+export const getBookingsAndSalesTotals = async (req, res) => {
+	try {
+		//Get totals for bookings
+		const allMonthlyTotalBookings = await BookingStats.findAll({
+			attributes: {
+				exclude: [
+					'id',
+					'startDate',
+					'createdAt',
+					'updatedAt'
+				]
+			},
+		});
+
+		//Get sales totals finish this later.
+		const allMonthlyTotalSales = await SalesStats.findAll({
+			attributes: {
+				exclude: [
+					'id',
+					'startDate',
+					'createdAt',
+					'updatedAt'
+				]
+			},
+		});
+
+		if (allMonthlyTotalBookings && allMonthlyTotalSales) {
+			res.status(200).send({
+				success: true,
+				salesTotals: allMonthlyTotalSales,
+				bookingTotals: allMonthlyTotalBookings
+			});
+		} else if (allMonthlyTotalBookings && !allMonthlyTotalSales) {
+			res.status(200).send({
+				success: true,
+				salesTotals: ["No sales data yet"],
+				bookingTotals: allMonthlyTotalBookings
+			});
+		} else if (!allMonthlyTotalBookings && allMonthlyTotalSales) {
+			res.status(200).send({
+				success: true,
+				salesTotals: allMonthlyTotalSales,
+				bookingTotals: ["No bookings data yet"]
+			});
+		} else {
+			//Send no content client response
+			res.status(204).send({
+				success: true,
+				message: ["No data yet"]
+			});
+		}
+	} catch (error) {
+		console.log(error);
+		res.status(500).send({ success: false, error: error.message });
 	}
 };

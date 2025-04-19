@@ -16,7 +16,6 @@ export const getAService = async (req, res) => {
             }
         });
 
-        console.log("service", service)
         if (service) {
             res.status(200).send({
                 success: true,

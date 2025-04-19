@@ -47,7 +47,6 @@ export const createAPost = async (req, res) => {
     try {
         //***check if user exist */
         if (req.body.username) {
-            console.log("username:", req.body.username);
             const user = await User.findOne({ where: { username: req.body.username } })
             if (user) {
                 const newPost = await Post.create(

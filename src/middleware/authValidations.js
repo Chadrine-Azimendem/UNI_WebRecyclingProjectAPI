@@ -36,15 +36,16 @@ export const checkPass = async (req, res, next) => {
 	}
 };
 
-export const checkToken = async (req, res, next) => {
+//fix this to authenticate the stats end point.
+export const verifyToken = async (req, res, next) => {
 	try {
 		if (!req.header("Authorization")) {
 			console.log("no token passed");
 			throw new Error("no token passed");
 		}
 		const token = req.header("Authorization").replace("Bearer ", "");
-		const decodedToken = await jwt.verify(token, process.env.SECRET);
-		req.user = await User.findById(decodedToken.id_);
+		const decodedJwt = jwt.verify(token, process.env.JWT_SECRET);
+		req.user = await User.findById(decodedJwt.username_);
 		if (req.user) {
 			req.authUser = req.user;
 			next();

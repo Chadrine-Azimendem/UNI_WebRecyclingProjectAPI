@@ -6,8 +6,6 @@ export const getmatchingEmail = async (req, res, next) => {
 		const filter = { username: req.body.username };
 		const userObj = await User.findOne(filter);
 
-		console.log("the user found is:", userObj); //test
-
 		if (userObj && req.body.email === userObj.email) {
 			console.log("the email is corect");
 			next();
@@ -53,7 +51,7 @@ export const isPasswordValid = async (req, res, next) => {
 		const chosenPassword = req.body.password;
 		const commonPassList = [".Qwerty1", "!Q1w2e3r4", ".Password123"];
 		const isPasswordCommon = commonPassList.includes(chosenPassword);
-		console.log("isPasswordCommon:", isPasswordCommon);
+
 		if (regexForValidPassword.test(chosenPassword) && !isPasswordCommon) {
 			console.log("the passwords format is valid");
 			next(); //move to next validations if successfull action

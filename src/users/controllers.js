@@ -65,6 +65,9 @@ export const loginUser = async (req, res) => {
 			username: req.matchingUser.username,
 			email: req.matchingUser.email,
 			type: req.matchingUser.is_admin,
+			phone: req.matchingUser.phone,
+			address: req.matchingUser.address,
+			postcode: req.matchingUser.postcode,
 			usersToken
 		});
 	} catch (error) {
@@ -78,18 +81,33 @@ export const updateUser = async (req, res) => {
 	try {
 		// define the filter
 		const filter = { username: req.body.username };
-		// define the field that is being updated
-		const update = { [req.body.key]: req.body.value };
 
-		let updatedUser = await User.findOneAndUpdate(filter, update, {
-			new: true // returns the updated values
-		});
-		console.log(updatedUser);
-		res.status(200).send({
+		const updateData = {};
+
+		for (const [key, value] of Object.entries(req.body)) {
+			if (value.trim() !== "" && key !== "old_password") {
+				updateData[key] = value;
+			}
+		}
+
+		await User.update(
+			{
+				...updateData
+			},
+			{ where: { ...filter } }
+		)
+
+		const newUserData = await User.findOne({ where: { ...filter } });
+
+		res.status(200).json({
 			success: true,
-			message: `the ${req.body.key} has been updated to ${req.body.value}`,
-			key: req.body.key,
-			value: req.body.value
+			userId: newUserData.id,
+			username: newUserData.username,
+			email: newUserData.email,
+			type: newUserData.is_admin,
+			phone: newUserData.phone,
+			address: newUserData.address,
+			postcode: newUserData.postcode
 		});
 	} catch (error) {
 		console.log(error);

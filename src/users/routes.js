@@ -8,7 +8,7 @@ import {
 	loginUser,
 	getBookingsAndSalesTotals
 } from "./controllers.js";
-import { hashPassword, checkPass, verifyToken } from "../middleware/authValidations.js";
+import { hashPassword, checkPass, verifyToken, checkOldPassword } from "../middleware/authValidations.js";
 import {
 	isPasswordValid,
 	isEmailValid
@@ -27,10 +27,8 @@ usersRouter.post("/login", checkPass, loginUser);
 // usersRouter.post("/readUser", checkToken, readUsers);
 usersRouter.put(
 	"/updateDetails",
-	// checkToken,
-	// isPasswordValid,
-	// hashPass,
-	// isEmailValid,
+	isPasswordValid,
+	checkOldPassword,
 	updateUser
 );
 

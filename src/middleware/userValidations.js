@@ -46,6 +46,18 @@ export const isEmailValid = async (req, res, next) => {
 
 //Check if the password is valid and secure
 export const isPasswordValid = async (req, res, next) => {
+	if (req.method === "POST") {
+		checkPasswordValidity(req, res, next)
+	}
+	else if (req.method === "PUT") {
+		if (req.body.password.trim() !== "" && req.body.username.trim() !== "") {
+			checkPasswordValidity(req, res, next)
+		}
+		next(); //move to next validations if successfull action
+	}
+};
+
+function checkPasswordValidity(req, res, next) {
 	try {
 		const regexForValidPassword = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[a-zA-Z]).{8,}$/;
 		const chosenPassword = req.body.password;
@@ -74,4 +86,4 @@ export const isPasswordValid = async (req, res, next) => {
 		console.log(error);
 		res.status(500).send({ success: false, error: error.message });
 	}
-};
+}

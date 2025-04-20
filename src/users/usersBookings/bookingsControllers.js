@@ -1,6 +1,6 @@
 import { MultiBooking, SingleBooking } from "../../models/Bookings.js";
-/***API Endpoints for Multi-Bookings ***/
 
+/***API Endpoints for Multi-Bookings ***/
 // Get all multi-bookings for a user
 export const getAllMultiBookings = async (req, res) => {
     const userId = req.query.userId;
@@ -144,4 +144,3 @@ export const deleteSingleBooking = async (req, res) => {
         res.status(500).json({ error: "Internal server error: " + error.message });
     }
 };
-

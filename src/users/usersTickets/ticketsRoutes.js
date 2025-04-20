@@ -1,11 +1,6 @@
 import express from "express";
-// //import controller and midlewares
-import {
-    getAllTickets,
-    updateATicket,
-    deleteATicket
-} from "./ticketsControllers.js";
-
+//import controller and midlewares
+import { getAllTickets, updateATicket, deleteATicket } from "./ticketsControllers.js";
 
 const usersTicketsRouter = express.Router();
 

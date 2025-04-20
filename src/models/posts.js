@@ -1,6 +1,7 @@
 import { Sequelize } from "sequelize";
 import sequelizeConnector from "../database/dbConnection.js";
 
+//Define posts table.
 const Post = sequelizeConnector.define("post", {
 	id: {
 		type: Sequelize.INTEGER,

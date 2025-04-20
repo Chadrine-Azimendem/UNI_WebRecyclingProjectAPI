@@ -1,11 +1,7 @@
 import express from "express";
 
-// //import controller and midlewares
-import {
-	getAllPosts,
-	createAPost
-} from "./postsControllers.js";
-
+//import controller and midlewares
+import { getAllPosts, createAPost } from "./postsControllers.js";
 
 const usersPostsRouter = express.Router();
 

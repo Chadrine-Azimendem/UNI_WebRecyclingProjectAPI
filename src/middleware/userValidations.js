@@ -1,24 +1,3 @@
-import User from "../models/users.js";
-
-export const getmatchingEmail = async (req, res, next) => {
-	try {
-		// find the user in the data base
-		const filter = { username: req.body.username };
-		const userObj = await User.findOne(filter);
-
-		if (userObj && req.body.email === userObj.email) {
-			console.log("the email is corect");
-			next();
-		} else {
-			// throw an error if entered email does not match the email in the data base
-			throw Error("incorect username or password");
-		}
-	} catch (error) {
-		console.log(error);
-		res.status(500).send({ success: false, error: error.message });
-	}
-};
-
 //Check if the email format is valid
 export const isEmailValid = async (req, res, next) => {
 	try {

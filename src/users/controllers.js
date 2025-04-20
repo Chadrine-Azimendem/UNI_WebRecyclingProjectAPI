@@ -38,24 +38,10 @@ export const registerAUser = async (req, res) => {
 	}
 };
 
-//Delete a user
-export const deleteUser = async (req, res) => {
-	try {
-		await User.deleteOne({ username: req.body.username });
-		res.status(202).send({
-			success: true,
-			message: `${req.body.username} has been deleted`
-		});
-	} catch (error) {
-		console.log(error);
-		res.status(500).send({ success: false, error: error.message });
-	}
-};
-
 //Handle user athentication for login
 export const loginUser = async (req, res) => {
 	try {
-		/*generate token for user session more information on jwt and how it is 
+		/*generate token for user session. More information on jwt and how it is 
 		used can be found here: https://www.digitalocean.com/community/tutorials/nodejs-jwt-expressjs
 		#*/
 		const usersToken = jwt.sign(req.body.username, process.env.JWT_SECRET);
@@ -116,7 +102,7 @@ export const updateUser = async (req, res) => {
 	}
 };
 
-//Handle user athentication for login
+//Get all data for bookins statistics and recycled items statistics
 export const getBookingsAndSalesTotals = async (req, res) => {
 	try {
 		//Get totals for bookings
@@ -131,7 +117,7 @@ export const getBookingsAndSalesTotals = async (req, res) => {
 			},
 		});
 
-		//Get sales totals finish this later.
+		//Get recycled quantitied totals.
 		const allMonthlyTotalSales = await SalesStats.findAll({
 			attributes: {
 				exclude: [
@@ -143,6 +129,7 @@ export const getBookingsAndSalesTotals = async (req, res) => {
 			},
 		});
 
+		//send response dynamically.
 		if (allMonthlyTotalBookings && allMonthlyTotalSales) {
 			res.status(200).send({
 				success: true,

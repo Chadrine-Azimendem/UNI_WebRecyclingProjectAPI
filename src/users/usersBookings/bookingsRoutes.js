@@ -17,7 +17,4 @@ usersBookingsRouter.put("/api/single-bookings/:id", updateSingleBooking);
 //delete booking data
 usersBookingsRouter.delete("/api/single-bookings/:id", deleteSingleBooking);
 
-
-// usersBookingsRouter.post("/post", createAPost);
-
 export default usersBookingsRouter;

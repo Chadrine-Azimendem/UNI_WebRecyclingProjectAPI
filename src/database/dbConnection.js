@@ -10,7 +10,6 @@ const sequelizeConnector = new Sequelize(
 	process.env.DB_PASSWORD,
 	{
 		dialect: "mysql",
-		// logging: false,
 		dialectOptions: {
 			connectTimeout: 30000, // 30 seconds timeout
 		},

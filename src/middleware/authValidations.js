@@ -1,5 +1,4 @@
 import bcrypt from "bcrypt";
-import jwt from "jsonwebtoken";
 import User from "../models/users.js";
 
 //Hash the password before saving in database
@@ -56,27 +55,5 @@ export const checkPass = async (req, res, next) => {
 		}
 	} else {
 		throw new Error("Empty field.");
-	}
-};
-
-//fix this to authenticate the stats end point.
-export const verifyToken = async (req, res, next) => {
-	try {
-		if (!req.header("Authorization")) {
-			console.log("no token passed");
-			throw new Error("no token passed");
-		}
-		const token = req.header("Authorization").replace("Bearer ", "");
-		const decodedJwt = jwt.verify(token, process.env.JWT_SECRET);
-		req.user = await User.findById(decodedJwt.username_);
-		if (req.user) {
-			req.authUser = req.user;
-			next();
-		} else {
-			throw new Error("user is not authorised");
-		}
-	} catch (error) {
-		console.log(error);
-		res.status(500).send({ success: false, error: error.message });
 	}
 };
